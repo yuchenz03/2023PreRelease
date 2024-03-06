@@ -1,4 +1,5 @@
 #Add the symbol for O in the standard puzzle
+# DONE
 
 import random
 import os

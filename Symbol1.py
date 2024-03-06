@@ -1,4 +1,5 @@
 #Accept both lowercase and uppercase letters when inputting symbols
+# DONE
 
 import random
 import os

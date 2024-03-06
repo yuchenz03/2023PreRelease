@@ -1,6 +1,7 @@
-#If a filename is entered that does not exist, the game is unplayable (infinite loop). 
-#Amend the program so that in this case the default game is played, with a suitable message to indicate this.
-# DONE
+#Skeleton Program code for the AQA A Level Paper 1 Summer 2024 examination
+#this code should be used in conjunction with the Preliminary Material
+#written by the AQA Programmer Team
+#developed in the Python 3.9.4 programming environment
 
 import random
 import os
@@ -10,15 +11,13 @@ def Main():
     Score = 0 
     while Again == "y": 
         Filename = input("Press Enter to start a standard puzzle or enter name of file to load: ") 
-        if Filename in ['puzzle1','puzzle2','puzzle3','puzzle4']: 
+        if len(Filename) > 0: 
             MyPuzzle = Puzzle(Filename + ".txt") 
         else: 
-            if len(Filename )> 0:
-                print("Invalid file name, default game loaded.")
             MyPuzzle = Puzzle(8, int(8 * 8 * 0.6)) 
         Score = MyPuzzle.AttemptPuzzle() 
         print("Puzzle finished. Your score was: " + str(Score)) 
-        Again = input("Do another puzzle? ").lower() 
+        Again = input("Do another puzzle? ").lower()
 
 class Puzzle(): 
     def __init__(self, *args): 
@@ -86,36 +85,59 @@ class Puzzle():
         while not Finished:
             self.DisplayPuzzle()
             print("Current score: " + str(self.__Score))
+            print("Symbols left: " + str(self.__SymbolsLeft)) #5.1 - added line
             Row = -1
             Valid = False
-            while not Valid:
-                try:
-                    Row = int(input("Enter row number: "))
-                    Valid = True
-                except:
-                    pass
-            Column = -1
-            Valid = False
-            while not Valid:
-                try:
-                    Column = int(input("Enter column number: "))
-                    Valid = True
-                except:
-                    pass
-            Symbol = self.__GetSymbolFromUser()
-            self.__SymbolsLeft -= 1
-            CurrentCell = self.__GetCell(Row, Column)
-            if CurrentCell.CheckSymbolAllowed(Symbol):
-                CurrentCell.ChangeSymbolInCell(Symbol)
-                AmountToAddToScore = self.CheckforMatchWithPattern(Row, Column)
-                if AmountToAddToScore > 0:
-                    self.__Score += AmountToAddToScore
-            if self.__SymbolsLeft == 0:
-                Finished = True
-        print()
-        self.DisplayPuzzle()
-        print()
-        return self.__Score
+            removeSymbol = input("Would you like to remove a symbol (y or n): ") #5.1 changes
+            if removeSymbol == 'y':
+                while not Valid:
+                    try:
+                        Row = int(input("Enter row number: "))
+                        Valid = True
+                    except:
+                        pass
+                Column = -1
+                Valid = False
+                while not Valid:
+                    try:
+                        Column = int(input("Enter column number: "))
+                        Valid = True
+                    except:
+                        pass
+                #check if there is a symbol to be removed and is not a blocked
+                CurrentCell = self.__GetCell(Row, Column)
+                if CurrentCell != '@' and CurrentCell != '-': 
+                    CurrentCell.ChangeSymbolInCell(Symbol)
+                    self.__SymbolsLeft += 1
+            else: #5.1 end changes
+                while not Valid:
+                    try:
+                        Row = int(input("Enter row number: "))
+                        Valid = True
+                    except:
+                        pass
+                Column = -1
+                Valid = False
+                while not Valid:
+                    try:
+                        Column = int(input("Enter column number: "))
+                        Valid = True
+                    except:
+                        pass
+                Symbol = self.__GetSymbolFromUser()
+                self.__SymbolsLeft -= 1
+                CurrentCell = self.__GetCell(Row, Column)
+                if CurrentCell.CheckSymbolAllowed(Symbol):
+                    CurrentCell.ChangeSymbolInCell(Symbol)
+                    AmountToAddToScore = self.CheckforMatchWithPattern(Row, Column)
+                    if AmountToAddToScore > 0:
+                        self.__Score += AmountToAddToScore
+                if self.__SymbolsLeft == 0:
+                    Finished = True
+            print()
+            self.DisplayPuzzle()
+            print()
+            return self.__Score
 
     def __GetCell(self, Row, Column):
         Index = (self.__GridSize - Row) * self.__GridSize + Column - 1
@@ -234,7 +256,7 @@ class Cell():
     def UpdateCell(self):
         pass
 
-class BlockedCell(Cell): #Inherits from Cell
+class BlockedCell(Cell): 
     def __init__(self):
         super(BlockedCell, self).__init__()
         self._Symbol = "@"
