@@ -1,6 +1,4 @@
-##### CODE COMMENTED ON PAPER #####
-
-import random
+import random 
 import os
 
 def Main(): 
