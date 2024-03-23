@@ -4,48 +4,48 @@ import random
 import os
 
 def Main(): 
-    Again = "y" 
-    Score = 0 
-    while Again == "y": 
-        Filename = input("Press Enter to start a standard puzzle or enter name of file to load: ") 
-        if len(Filename) > 0: 
-            MyPuzzle = Puzzle(Filename + ".txt") 
-        else: 
-            MyPuzzle = Puzzle(8, int(8 * 8 * 0.6)) 
-        Score = MyPuzzle.AttemptPuzzle() 
-        print("Puzzle finished. Your score was: " + str(Score)) 
-        Again = input("Do another puzzle? ").lower() 
+    Again = "y" #set again to equal yes initially to start the first run
+    Score = 0 #set score to equal 0
+    while Again == "y": #if again is set to True
+        Filename = input("Press Enter to start a standard puzzle or enter name of file to load: ") #to load a  file
+        if len(Filename) > 0: #If a puzzle is to be opened, then:
+            MyPuzzle = Puzzle(Filename + ".txt") #Open the file with the specified name
+        else: #otherwise, load the standard puzzle
+            MyPuzzle = Puzzle(8, int(8 * 8 * 0.6)) #the size of the puzzle is 8x8, and the number of                 
+        Score = MyPuzzle.AttemptPuzzle() #Calling the AttemptPuzzle class, which returns the score
+        print("Puzzle finished. Your score was: " + str(Score)) #Outputs the score achieved 
+        Again = input("Do another puzzle? ").lower() #Asks the user if they want to do another puzzle
 
 class Puzzle(): 
-    def __init__(self, *args): 
-        if len(args) == 1: 
-            self.__Score = 0 
-            self.__SymbolsLeft = 0 
-            self.__GridSize = 0 
-            self.__Grid = [] 
-            self.__AllowedPatterns = [] 
-            self.__AllowedSymbols = [] 
-            self.__LoadPuzzle(args[0])
-        else:
-            self.__Score = 0
-            self.__SymbolsLeft = args[1]
-            self.__GridSize = args[0]
-            self.__Grid = []
-            for Count in range(1, self.__GridSize * self.__GridSize + 1):
-                if random.randrange(1, 101) < 90:
-                    C = Cell()
-                else:
-                    C = BlockedCell()
-                self.__Grid.append(C)
-            self.__AllowedPatterns = []
-            self.__AllowedSymbols = []
-            QPattern = Pattern("Q", "QQ**Q**QQ")
+    def __init__(self, *args):  #Initializing the Puzzle object
+        if len(args) == 1: #if there is only one argument passed - a puzzle file will be loaded
+            self.__Score = 0 #sets score to 0
+            self.__SymbolsLeft = 0 #initializes symbols left variable
+            self.__GridSize = 0 #initializes gridsize variable
+            self.__Grid = [] #initializes grid
+            self.__AllowedPatterns = [] #initializes allowed patterns variable
+            self.__AllowedSymbols = [] #initializes allowed symbols variable
+            self.__LoadPuzzle(args[0]) #Load the puzzle using the LoadPuzzle method.
+        else: #Otherwise, if the standard puzzle is to be loaded
+            self.__Score = 0 #initialize score
+            self.__SymbolsLeft = args[1] #number of symbols to be placed is second argument passed
+            self.__GridSize = args[0] #grid size is the first argument passed
+            self.__Grid = [] #initializes grid
+            for Count in range(1, self.__GridSize * self.__GridSize + 1): #
+                if random.randrange(1, 101) < 90: #with a 90% chance of creating a cell
+                    C = Cell() #Creating an object Cell
+                else: #10% chance of creating a blocked cell.
+                    C = BlockedCell() #Creating an object blocked cell
+                self.__Grid.append(C) #add it to the grid
+            self.__AllowedPatterns = [] #Initialize list of allowed patterns
+            self.__AllowedSymbols = [] #Initialize list of allowed symbols
+            QPattern = Pattern("Q", "QQ**Q**QQ") #Create the Q Pattern object
             self.__AllowedPatterns.append(QPattern)
-            self.__AllowedSymbols.append("Q")
-            XPattern = Pattern("X", "X*X*X*X*X")
+            self.__AllowedSymbols.append("Q") 
+            XPattern = Pattern("X", "X*X*X*X*X") #Create the X Pattern object
             self.__AllowedPatterns.append(XPattern)
             self.__AllowedSymbols.append("X")
-            TPattern = Pattern("T", "TTT**T**T")
+            TPattern = Pattern("T", "TTT**T**T") #Create the T Pattern object
             self.__AllowedPatterns.append(TPattern)
             self.__AllowedSymbols.append("T")
 
@@ -147,11 +147,11 @@ class Puzzle():
                             self.__GetCell(StartRow - 1, StartColumn).AddToNotAllowedSymbols(CurrentSymbol)
                             self.__GetCell(StartRow - 1, StartColumn + 1).AddToNotAllowedSymbols(CurrentSymbol)
                             return 10
-                except:
-                    pass
-        return 0
+                except: 
+                    pass 
+        return 0 
 
-    def __GetSymbolFromUser(self):
+    def __GetSymbolFromUser(self): 
         Symbol = ""
         while not Symbol in self.__AllowedSymbols:
             Symbol = input("Enter symbol: ")
