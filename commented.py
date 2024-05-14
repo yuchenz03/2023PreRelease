@@ -39,4 +39,4 @@ class Puzzle():
             #add different types of symbols to score points. These allowed
             #symbols and patterns are specified in the file
             self.__LoadPuzzle(args[0])
-            #the load puzzle function is used specifically for             
+            #the load puzzle function is used specifically for
