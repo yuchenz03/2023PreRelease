@@ -6,7 +6,7 @@ import random
 import os
 
 def Main(): 
-    Again = "y" 
+    Again = "y"
     Score = 0 
     while Again == "y": 
         Filename = input("Press Enter to start a standard puzzle or enter name of file to load: ") 

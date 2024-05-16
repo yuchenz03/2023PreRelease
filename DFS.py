@@ -1,7 +1,5 @@
 #Depth first search using a stack implementation - my version.
-
 ### Stack data structure  ###
-
 
 #This approach to building a stack uses a pointer.
 class Stack:
@@ -77,16 +75,16 @@ def depthFirstSearch(graph):
     visited.add(list(graph.keys())[0]) #Add first node as visited
     
     while stack.isEmpty() == False:
-        node = stack.peek()
-        visited.add(node)
-        for newnode in graph[node]:
-            if newnode not in visited:
-                stack.push(newnode)
-        newnode = stack.peek()
-        if node == newnode:
-            if node not in output:
-                output.insert(0,node)
-            stack.pop()
+        node = stack.peek() 
+        visited.add(node) #Add the current node into the visited set
+        for newnode in graph[node]: #for each node neighboured to curr node
+            if newnode not in visited: 
+                stack.push(newnode) #if not previously visited, add node to stack
+        lastnode = stack.peek() 
+        if node == lastnode: #if all neighbouring nodes have been visited
+            if node not in output: #if this node hasn't been passed before,
+                output.insert(0,node) #add it to the output list.
+            stack.pop() #pop the last value. 
     return output
 
 print(depthFirstSearch(graph))
